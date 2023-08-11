@@ -1,8 +1,13 @@
+import { Route, BrowserRouter as Router, Routes } from 'react-router-dom';
+import Login from './pages/Login.tsx';
+
 function App() {
   return (
-    <>
-      <h1 className='text-3xl font-bold underline bg-red-500 p-8'>Hello SiosLife!</h1>
-    </>
+    <Router>
+      <Routes>
+        <Route path='/' element={<Login />} />
+      </Routes>
+    </Router>
   );
 }
 
