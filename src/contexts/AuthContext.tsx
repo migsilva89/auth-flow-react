@@ -7,11 +7,10 @@ const AuthContext = createContext<AuthContextData>({} as AuthContextData);
 
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [user, setUser] = useState<User | null>(null);
-  const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false); // New state
+  const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
 
   const { 'auth-flow-token': token } = parseCookies();
 
-  //token is present when the app starts ?
   if (token) {
     api.defaults.headers['Authorization'] = `Bearer ${token}`;
   }
