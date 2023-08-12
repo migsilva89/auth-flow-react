@@ -1,14 +1,12 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { useAuth } from '../../contexts/useAuth.ts';
-
-interface LoginFormValues {
-  username: string;
-  password: string;
-}
+import { useNavigate } from 'react-router-dom';
+import { LoginFormValues } from '../../interfaces/authTypes.ts';
 
 const LoginForm: React.FC = () => {
-  const { login } = useAuth();
+  const { login, isAuthenticated } = useAuth();
+  const navigate = useNavigate();
   const {
     register,
     handleSubmit,
@@ -18,10 +16,18 @@ const LoginForm: React.FC = () => {
   const onSubmit = async (data: LoginFormValues) => {
     try {
       await login(data.username, data.password);
+      navigate('/dashboard');
     } catch (error) {
       console.error(error);
     }
   };
+
+  // should we use useEffect?
+  useEffect(() => {
+    if (isAuthenticated) {
+      navigate('/dashboard');
+    }
+  }, [isAuthenticated, navigate]);
 
   return (
     <section className='bg-gray-900 h-screen'>

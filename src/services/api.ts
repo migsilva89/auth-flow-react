@@ -4,7 +4,7 @@ import { parseCookies } from 'nookies';
 const { 'auth-flow-token': token } = parseCookies();
 
 export const api = axios.create({
-  baseURL: 'https://dummyjson.com',
+  baseURL: import.meta.env.VITE_API_BASE_URL,
 });
 
 if (token) {

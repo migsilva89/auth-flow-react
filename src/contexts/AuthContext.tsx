@@ -1,33 +1,63 @@
-import React, { createContext, useState } from 'react';
+import React, { createContext, useState, useEffect } from 'react';
 import { api } from '../services/api.ts';
 import { AuthContextData, User } from '../interfaces/authTypes.ts';
+import { parseCookies, setCookie, destroyCookie } from 'nookies';
 
-// Create the AuthContext with an initial empty object (useful for typing)
 const AuthContext = createContext<AuthContextData>({} as AuthContextData);
 
-// AuthProvider component responsible for setting up the context and authentication logic
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [user, setUser] = useState<User | null>(null);
+  const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false); // New state
 
-  //todo: save token on cookies
+  const { 'auth-flow-token': token } = parseCookies();
+
+  //token is present when the app starts ?
+  if (token) {
+    api.defaults.headers['Authorization'] = `Bearer ${token}`;
+  }
+
+  useEffect(() => {
+    setIsAuthenticated(!!token); //converting the value of token to boolean with !!
+  }, [token]);
+
   async function login(username: string, password: string): Promise<void> {
     try {
       const response = await api.post('/auth/login', { username, password });
       const userData: User = response.data;
+
+      setCookie(null, 'auth-flow-token', userData.token, {
+        maxAge: 30 * 24 * 60 * 60, // 30 days in seconds
+        path: '/',
+      });
+
+      api.defaults.headers['Authorization'] = `Bearer ${userData.token}`;
+
       setUser(userData);
+      setIsAuthenticated(true);
     } catch (error) {
       throw new Error('Authentication failed');
     }
   }
 
   function logout(): void {
+    destroyCookie(null, 'auth-flow-token');
+    delete api.defaults.headers['Authorization'];
     setUser(null);
-    //todo: add logout logic remove token from cookies
+    setIsAuthenticated(false);
   }
 
-  // Provide the context value to the components wrapped in AuthProvider
-  return <AuthContext.Provider value={{ user, login, logout }}>{children}</AuthContext.Provider>;
+  return (
+    <AuthContext.Provider
+      value={{
+        user,
+        login,
+        logout,
+        isAuthenticated,
+      }}
+    >
+      {children}
+    </AuthContext.Provider>
+  );
 };
 
-// Export the AuthContext for components to use
 export { AuthContext };

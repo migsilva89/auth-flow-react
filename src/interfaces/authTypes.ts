@@ -13,4 +13,10 @@ export interface AuthContextData {
   user: User | null;
   login(username: string, password: string): Promise<void>;
   logout(): void;
+  isAuthenticated: boolean;
+}
+
+export interface LoginFormValues {
+  username: string;
+  password: string;
 }
