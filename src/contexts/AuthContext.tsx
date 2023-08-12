@@ -21,22 +21,18 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   }, [token]);
 
   async function login(username: string, password: string): Promise<void> {
-    try {
-      const response = await api.post('/auth/login', { username, password });
-      const userData: User = response.data;
+    const response = await api.post('/auth/login', { username, password });
+    const userData: User = response.data;
 
-      setCookie(null, 'auth-flow-token', userData.token, {
-        maxAge: 30 * 24 * 60 * 60, // 30 days in seconds
-        path: '/',
-      });
+    setCookie(null, 'auth-flow-token', userData.token, {
+      maxAge: 30 * 24 * 60 * 60, // 30 days in seconds
+      path: '/',
+    });
 
-      api.defaults.headers['Authorization'] = `Bearer ${userData.token}`;
+    api.defaults.headers['Authorization'] = `Bearer ${userData.token}`;
 
-      setUser(userData);
-      setIsAuthenticated(true);
-    } catch (error) {
-      throw new Error('Authentication failed');
-    }
+    setUser(userData);
+    setIsAuthenticated(true);
   }
 
   function logout(): void {

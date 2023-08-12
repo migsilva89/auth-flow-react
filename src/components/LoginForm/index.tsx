@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useAuth } from '../../contexts/useAuth.ts';
 import { useNavigate } from 'react-router-dom';
@@ -7,6 +7,7 @@ import { LoginFormValues } from '../../interfaces/authTypes.ts';
 const LoginForm: React.FC = () => {
   const { login, isAuthenticated } = useAuth();
   const navigate = useNavigate();
+  const [errorMessageApiResponse, setErrorMessageApiResponse] = useState<string | null>(null);
   const {
     register,
     handleSubmit,
@@ -14,12 +15,18 @@ const LoginForm: React.FC = () => {
   } = useForm<LoginFormValues>();
 
   const onSubmit = async (data: LoginFormValues) => {
+    setErrorMessageApiResponse(null);
     try {
       await login(data.username, data.password);
       navigate('/dashboard');
     } catch (error) {
-      console.error(error);
+      const errorResponse = error.response.data.message;
+      setErrorMessageApiResponse(errorResponse);
     }
+  };
+
+  const resetErrorMessage = () => {
+    setErrorMessageApiResponse(null);
   };
 
   // should we use useEffect?
@@ -48,6 +55,7 @@ const LoginForm: React.FC = () => {
                   {...register('username', { required: true })}
                   className='border sm:text-sm rounded-lg block w-full p-2.5 bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500'
                   placeholder='Username'
+                  onClick={resetErrorMessage}
                 />
                 {errors.username && <span className='text-red-500'>Username is required</span>}
               </div>
@@ -61,6 +69,7 @@ const LoginForm: React.FC = () => {
                   {...register('password', { required: true })}
                   placeholder='••••••••'
                   className='border sm:text-sm rounded-lg focus:border-sky-600 block w-full p-2.5 bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-blue-500'
+                  onClick={resetErrorMessage}
                 />
                 {errors.password && <span className='text-red-500'>Password is required</span>}
               </div>
@@ -70,6 +79,9 @@ const LoginForm: React.FC = () => {
               >
                 Login
               </button>
+              <div className='h-5'>
+                {errorMessageApiResponse && <span className='text-red-500'>{errorMessageApiResponse}</span>}
+              </div>
             </form>
           </div>
         </div>
