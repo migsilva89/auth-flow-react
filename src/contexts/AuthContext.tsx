@@ -2,7 +2,7 @@ import React, { createContext, useState, useEffect } from 'react';
 import { api } from '../services/api.ts';
 import { AuthContextData, User } from '../interfaces/authTypes.ts';
 import { parseCookies, setCookie, destroyCookie } from 'nookies';
-import jwt from 'jwt-decode'; // import dependency
+import jwt from 'jwt-decode';
 
 const AuthContext = createContext<AuthContextData>({} as AuthContextData);
 

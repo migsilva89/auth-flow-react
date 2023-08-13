@@ -15,23 +15,20 @@ const Dashboard = () => {
 
   return (
     <>
-      <main className='bg-gray-900'>
-        <header className='text-center py-10'>
-          <p className='text-white text-lg'>
-            Parabéns! Você fez login com sucesso. Aqui estão os detalhes do seu perfil:
-          </p>
-          {user && (
-            <div className='text-gray-300'>
-              <p>Nome: {user.firstName}</p>
-            </div>
-          )}
-          <p className='text-red-500 mt-4'>
-            Lembre-se de que esta rota é protegida. Se você apagar o token dos cookies, será redirecionado para a página
-            de login.
-          </p>
-        </header>
+      <header className='text-center py-10 mt-8 max-w-lg mx-auto'>
+        <p className='text-white text-lg px-4'>
+          Parabéns {user?.firstName}! Fizes-te login com sucesso. Aqui estão os detalhes do perfil logado:
+        </p>
+      </header>
+      <main>
         <DashboardView user={user} />
       </main>
+      <footer>
+        <p className='text-red-500 mt-4 max-w-lg text-center mx-auto px-4'>
+          Lembra-te de que esta rota é protegida. Se apagares o token dos cookies ou fizeres logout, serás redirecionado
+          para a página de login, nao podendo aceder a esta pagina sem fazer login novamente.
+        </p>
+      </footer>
     </>
   );
 };

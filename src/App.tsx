@@ -1,7 +1,6 @@
-import { Route, BrowserRouter as Router, Routes } from 'react-router-dom';
+import { Route, BrowserRouter as Router, Routes, Navigate } from 'react-router-dom';
 import Login from './pages/Login.tsx';
 import Dashboard from './pages/Dashboard.tsx';
-import PrivateRoute from './components/PrivateRoute';
 import { useAuth } from './contexts/useAuth.ts';
 
 function App() {
@@ -11,14 +10,7 @@ function App() {
     <Router>
       <Routes>
         <Route path='/' element={<Login />} />
-        <Route
-          path='/dashboard'
-          element={
-            <PrivateRoute isAuthenticated={isAuthenticated}>
-              <Dashboard />
-            </PrivateRoute>
-          }
-        />
+        <Route path='/dashboard' element={isAuthenticated ? <Dashboard /> : <Navigate to='/' />} />
       </Routes>
     </Router>
   );
