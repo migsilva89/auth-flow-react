@@ -1,11 +1,11 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useAuth } from '../../contexts/useAuth.ts';
+import { ErrorResponseMessage, LoginFormValues } from '../../interfaces/authTypes.ts';
 import { useNavigate } from 'react-router-dom';
-import { LoginFormValues } from '../../interfaces/authTypes.ts';
 
 const LoginForm: React.FC = () => {
-  const { login, isAuthenticated } = useAuth();
+  const { login } = useAuth();
   const navigate = useNavigate();
   const [errorMessageApiResponse, setErrorMessageApiResponse] = useState<string | null>(null);
   const {
@@ -20,21 +20,19 @@ const LoginForm: React.FC = () => {
       await login(data.username, data.password);
       navigate('/dashboard');
     } catch (error) {
-      const errorResponse = error.response.data.message;
-      setErrorMessageApiResponse(errorResponse);
+      console.log(error);
+      const {
+        response: {
+          data: { message },
+        },
+      } = error as ErrorResponseMessage;
+      setErrorMessageApiResponse(message);
     }
   };
 
   const resetErrorMessage = () => {
     setErrorMessageApiResponse(null);
   };
-
-  // should we use useEffect?
-  useEffect(() => {
-    if (isAuthenticated) {
-      navigate('/dashboard');
-    }
-  }, [isAuthenticated, navigate]);
 
   return (
     <section className='bg-gray-900 h-screen'>
