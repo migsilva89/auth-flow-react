@@ -1,8 +1,13 @@
 import React from 'react';
 import { useAuth } from '../../contexts/useAuth.ts';
+import { User } from '../../interfaces/authTypes.ts';
 
-const DashboardView: React.FC = () => {
-  const { logout, user } = useAuth();
+interface DashboardViewProps {
+  user: User | null;
+}
+
+const DashboardView: React.FC<DashboardViewProps> = ({ user }) => {
+  const { logout } = useAuth();
 
   const handleLogout = () => {
     logout();

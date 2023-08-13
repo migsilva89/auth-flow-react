@@ -2,6 +2,7 @@ import React, { createContext, useState, useEffect } from 'react';
 import { api } from '../services/api.ts';
 import { AuthContextData, User } from '../interfaces/authTypes.ts';
 import { parseCookies, setCookie, destroyCookie } from 'nookies';
+import jwt from 'jwt-decode'; // import dependency
 
 const AuthContext = createContext<AuthContextData>({} as AuthContextData);
 
@@ -11,11 +12,15 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
   const { 'auth-flow-token': token } = parseCookies();
 
-  if (token) {
-    api.defaults.headers['Authorization'] = `Bearer ${token}`;
-  }
-
   useEffect(() => {
+    if (token) {
+      api.defaults.headers['Authorization'] = `Bearer ${token}`;
+      const decodedToken: never = jwt(token);
+      if (decodedToken) {
+        const userData: User = decodedToken;
+        setUser(userData);
+      }
+    }
     setIsAuthenticated(!!token); //converting the value of token to boolean with !!
   }, [token]);
 
