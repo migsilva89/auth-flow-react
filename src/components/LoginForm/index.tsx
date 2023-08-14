@@ -20,6 +20,7 @@ const LoginForm: React.FC = () => {
   const onSubmit = async (data: LoginFormValues) => {
     setLoading(true);
     setErrorMessageApiResponse(null);
+
     try {
       await login(data.username, data.password);
       navigate('/dashboard');
