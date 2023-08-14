@@ -1,5 +1,5 @@
-const Loading = () => {
-  return (
+export const Icons = {
+  loading: () => (
     <div role='status'>
       <svg
         aria-hidden='true'
@@ -19,7 +19,7 @@ const Loading = () => {
       </svg>
       <span className='sr-only'>Loading...</span>
     </div>
-  );
+  ),
 };
 
-export default Loading;
+export default Icons;

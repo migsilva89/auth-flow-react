@@ -1,12 +1,12 @@
 import React from 'react';
-import { useAuth } from '../../contexts/useAuth.ts';
-import { User } from '../../interfaces/authTypes.ts';
+import { useAuth } from '../../hooks/useAuth.ts';
+import { User } from '../../types/authTypes.ts';
 
-interface DashboardViewProps {
+interface DashboardProps {
   user: User | null;
 }
 
-const DashboardView: React.FC<DashboardViewProps> = ({ user }) => {
+const Dashboard: React.FC<DashboardProps> = ({ user }) => {
   const { logout } = useAuth();
 
   const handleLogout = () => {
@@ -32,4 +32,4 @@ const DashboardView: React.FC<DashboardViewProps> = ({ user }) => {
   );
 };
 
-export default DashboardView;
+export default Dashboard;

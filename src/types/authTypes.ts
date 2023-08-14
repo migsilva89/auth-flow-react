@@ -20,7 +20,3 @@ export interface LoginFormValues {
   username: string;
   password: string;
 }
-
-export interface ErrorResponseMessage {
-  message: string;
-}

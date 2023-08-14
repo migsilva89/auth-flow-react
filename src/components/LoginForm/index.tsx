@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { useAuth } from '../../contexts/useAuth.ts';
-import { LoginFormValues } from '../../interfaces/authTypes.ts';
+import { useAuth } from '../../hooks/useAuth.ts';
+import { LoginFormValues } from '../../types/authTypes.ts';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
-import Loading from '../Loading';
+import Icons from '../ui/Icons';
 
 const LoginForm: React.FC = () => {
   const { login } = useAuth();
@@ -77,7 +77,7 @@ const LoginForm: React.FC = () => {
               {errors.password && <span className='text-red-500'>Password is required</span>}
             </div>
             <button type='submit' className='button'>
-              {!loading ? 'Login' : <Loading />}
+              {!loading ? 'Login' : <Icons.loading />}
             </button>
             <div className='h-5'>
               {errorMessageApiResponse && <span className='text-red-500'>{errorMessageApiResponse}</span>}

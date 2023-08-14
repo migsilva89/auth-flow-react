@@ -1,9 +1,9 @@
-import DashboardView from '../components/DashboardView';
 import { useEffect } from 'react';
-import { useAuth } from '../contexts/useAuth.ts';
+import { useAuth } from '../hooks/useAuth.ts';
 import { useNavigate } from 'react-router-dom';
+import Dashboard from '../components/Dashboard';
 
-const Dashboard = () => {
+const DashboardPage = () => {
   const { isAuthenticated, user } = useAuth();
   const navigate = useNavigate();
 
@@ -21,7 +21,7 @@ const Dashboard = () => {
         </p>
       </header>
       <main>
-        <DashboardView user={user} />
+        <Dashboard user={user} />
       </main>
       <footer>
         <p className='text-red-500 mt-4 max-w-lg mx-auto px-4 text-center '>
@@ -33,4 +33,4 @@ const Dashboard = () => {
   );
 };
 
-export default Dashboard;
+export default DashboardPage;

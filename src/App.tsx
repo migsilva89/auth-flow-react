@@ -1,8 +1,9 @@
-import { Route, BrowserRouter as Router, Routes, Navigate } from 'react-router-dom';
+import { Route, BrowserRouter as Router, Routes } from 'react-router-dom';
 import Login from './pages/Login.tsx';
-import Dashboard from './pages/Dashboard.tsx';
-import { useAuth } from './contexts/useAuth.ts';
+import Dashboard from './pages/DashboardPage.tsx';
+import { useAuth } from './hooks/useAuth.ts';
 import NotFound from './pages/NotFound.tsx';
+import PrivateRoute from './components/PrivateRoutes';
 
 function App() {
   const { isAuthenticated } = useAuth();
@@ -12,7 +13,14 @@ function App() {
       <Routes>
         <Route path='*' element={<NotFound />} />
         <Route path='/' element={<Login />} />
-        <Route path='/dashboard' element={isAuthenticated ? <Dashboard /> : <Navigate to='/' />} />
+        <Route
+          path='/dashboard'
+          element={
+            <PrivateRoute isAuthenticated={isAuthenticated}>
+              <Dashboard />
+            </PrivateRoute>
+          }
+        />
       </Routes>
     </Router>
   );
