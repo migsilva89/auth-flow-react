@@ -4,7 +4,7 @@ Welcome to the Authentication Flow Web App! This project demonstrates a user aut
 
 ## Features
 
-- User registration and login forms.
+- User login form.
 - Secure token-based authentication.
 - Private routes for authenticated users.
 - Dashboard page after successful login.

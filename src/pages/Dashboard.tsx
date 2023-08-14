@@ -15,18 +15,18 @@ const Dashboard = () => {
 
   return (
     <>
-      <header className='text-center py-10 mt-8 max-w-lg mx-auto'>
+      <header className='text-center py-10 md:mt-52 mt-20 max-w-lg mx-auto'>
         <p className='text-white text-lg px-4'>
-          Parabéns {user?.firstName}! Fizes-te login com sucesso. Aqui estão os detalhes do perfil logado:
+          Congratulations! You have successfully logged in. Here are the details of the logged-in profile:
         </p>
       </header>
       <main>
         <DashboardView user={user} />
       </main>
       <footer>
-        <p className='text-red-500 mt-4 max-w-lg text-center mx-auto px-4'>
-          Lembra-te de que esta rota é protegida. Se apagares o token dos cookies ou fizeres logout, serás redirecionado
-          para a página de login, nao podendo aceder a esta pagina sem fazer login novamente.
+        <p className='text-red-500 mt-4 max-w-lg mx-auto px-4 text-center '>
+          Remember that this route is protected. If you delete the token from cookies or log out, you will be redirected
+          to the login page and won't be able to access this page without logging in again.
         </p>
       </footer>
     </>

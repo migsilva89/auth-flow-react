@@ -4,6 +4,7 @@ import { useAuth } from '../../contexts/useAuth.ts';
 import { LoginFormValues } from '../../interfaces/authTypes.ts';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import Loading from '../Loading';
 
 const LoginForm: React.FC = () => {
   const { login } = useAuth();
@@ -14,18 +15,21 @@ const LoginForm: React.FC = () => {
     handleSubmit,
     formState: { errors },
   } = useForm<LoginFormValues>();
+  const [loading, setLoading] = useState<boolean>(false);
 
   const onSubmit = async (data: LoginFormValues) => {
+    setLoading(true);
     setErrorMessageApiResponse(null);
     try {
       await login(data.username, data.password);
       navigate('/dashboard');
+      setLoading(false);
     } catch (error: unknown) {
-      console.log(error);
       if (axios.isAxiosError(error)) {
         const errorMessage = error.response?.data?.message;
         if (errorMessage) {
           setErrorMessageApiResponse(errorMessage);
+          setLoading(false);
         }
       }
     }
@@ -51,7 +55,7 @@ const LoginForm: React.FC = () => {
                 type='text'
                 id='username'
                 {...register('username', { required: true })}
-                className='border sm:text-sm rounded-lg block w-full p-2.5 bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500'
+                className='input'
                 placeholder='Username'
                 onClick={resetErrorMessage}
               />
@@ -66,16 +70,13 @@ const LoginForm: React.FC = () => {
                 id='password'
                 {...register('password', { required: true })}
                 placeholder='••••••••'
-                className='border sm:text-sm rounded-lg focus:border-sky-600 block w-full p-2.5 bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-blue-500'
+                className='input'
                 onClick={resetErrorMessage}
               />
               {errors.password && <span className='text-red-500'>Password is required</span>}
             </div>
-            <button
-              type='submit'
-              className='w-full text-white focus:ring-4 focus:outline-none font-medium rounded-lg text-sm px-5 py-2.5 text-center bg-sky-600 hover:bg-sky-700 focus:ring-sky-800'
-            >
-              Login
+            <button type='submit' className='button'>
+              {!loading ? 'Login' : <Loading />}
             </button>
             <div className='h-5'>
               {errorMessageApiResponse && <span className='text-red-500'>{errorMessageApiResponse}</span>}

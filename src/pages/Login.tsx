@@ -15,7 +15,7 @@ const Login = () => {
 
   return (
     <>
-      <header className='text-center mt-8'>
+      <header className='text-center md:mt-52 mt-20'>
         <img src='/logo-blue.png' alt='Your Logo' className='mx-auto w-96' />
       </header>
       <main>
